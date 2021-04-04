@@ -35,6 +35,26 @@ class Intervenants
      */
     private $user_id;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nomIntervenant;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $prenomIntervenant;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mailIntervenant;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
+
     public function __construct()
     {
         $this->heures = new ArrayCollection();
@@ -111,6 +131,54 @@ class Intervenants
     public function setUserId(users $user_id): self
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getNomIntervenant(): ?string
+    {
+        return $this->nomIntervenant;
+    }
+
+    public function setNomIntervenant(string $nomIntervenant): self
+    {
+        $this->nomIntervenant = $nomIntervenant;
+
+        return $this;
+    }
+
+    public function getPrenomIntervenant(): ?string
+    {
+        return $this->prenomIntervenant;
+    }
+
+    public function setPrenomIntervenant(string $prenomIntervenant): self
+    {
+        $this->prenomIntervenant = $prenomIntervenant;
+
+        return $this;
+    }
+
+    public function getMailIntervenant(): ?string
+    {
+        return $this->mailIntervenant;
+    }
+
+    public function setMailIntervenant(string $mailIntervenant): self
+    {
+        $this->mailIntervenant = $mailIntervenant;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }
