@@ -30,12 +30,6 @@ class Intervenants
     private $matieres;
 
     /**
-     * @ORM\OneToOne(targetEntity=Users::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user_id;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $nomIntervenant;

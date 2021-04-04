@@ -3,15 +3,19 @@
 {% block title %}Liste des intervenants{% endblock %}
 
 {% block body %}
+    <h1>Liste des intervenants</h1>
+    <table>
+        <tr>
+            <td>Nom</td>
+            <td>Prénom</td>
+        </tr>
+        {% for intervenant in intervenants %}
+            <tr>
+            <td> {{ intervenant.nomIntervenant }} </td>
+            <td> {{ intervenant.prenomIntervenant }} </td>
+            </tr>
+        {% endfor %}
+    </table>
 
-<th>
-
-    {% for intervenant in intervenants %}
-
-     <td> {{ intervenant.nomIntervenant }} {{ intervenant.prenomIntervenant }} </td>
-
-    {% endfor %}
-
-</th>
 
 {% endblock %}
