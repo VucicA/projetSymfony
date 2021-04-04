@@ -21,4 +21,18 @@ class ProfesseurController extends AbstractController
             'intervenants' => $intervenants,
         ]);
     }
+
+    /**
+     * @Route("/intervenant/{id}/modifier", name="intervenant_modifier")
+     */
+    public function modifier($id): Response
+    {
+        // Liste de tous les intervenants
+        $intervenant = $this->getDoctrine()->getRepository(Intervenants::class)->find($id);
+
+        return $this->render('professeur/modifierProfesseur.html.twig', [
+            'intervenant' => $intervenant,
+        ]);
+    }
+    
 }

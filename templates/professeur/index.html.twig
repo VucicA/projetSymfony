@@ -6,16 +6,19 @@
     <h1>Liste des intervenants</h1>
     <table>
         <tr>
-            <td>Nom</td>
-            <td>Prénom</td>
+            <td><b>Nom</b></td>
+            <td><b>Prénom</b></td>
         </tr>
         {% for intervenant in intervenants %}
             <tr>
-            <td> {{ intervenant.nomIntervenant }} </td>
-            <td> {{ intervenant.prenomIntervenant }} </td>
+                <td> {{ intervenant.nomIntervenant }} </td>
+                <td> {{ intervenant.prenomIntervenant }} </td>
+                <td> <a href="{{ path('intervenant_modifier', {'id':intervenant.id} ) }}">Modifier</a></td>
+                <td> <a href=''>Supprimer</a></td>
             </tr>
         {% endfor %}
     </table>
+    <a href=''>Ajouter</a>
 
 
 {% endblock %}
