@@ -18,7 +18,7 @@ class Secretaires
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=users::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Users::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user_id;

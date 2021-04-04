@@ -31,7 +31,7 @@ class Heures
     private $intervenant_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=matieres::class, inversedBy="heures")
+     * @ORM\ManyToMany(targetEntity=Matieres::class, inversedBy="heures")
      */
     private $matiere_id;
 
