@@ -14,14 +14,14 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+            'controllerName' => 'HomeController',
         ]);
     }
 
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="racine")
      */
     public function home(){
-        return $this->render('home/index.html.twing');
+        return $this->render('home/index.html.twig');
     }
 }
