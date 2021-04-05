@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Intervenants;
 use App\Form\IntervenantModifierFormType;
+use App\Form\IntervenantAjouterFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +47,7 @@ class ProfesseurController extends AbstractController
         {
             // Ecriture dans la base de données
             $this->getDoctrine()->getManager()->flush();
+            return $this->redirect('/intervenants');
         }
 
         return $this->render('professeur/modifierProfesseur.html.twig', [
@@ -68,9 +70,28 @@ class ProfesseurController extends AbstractController
     /**
      * @Route("/intervenant/Ajouter", name="intervenant_ajouter")
      */
-    public function Add(): Response
-    {
-        return $this->render('professeur/addProfesseur.html.twig', []);
+    public function Add(Request $request): Response
+    {   
+        // On instancie l'entité Intervenants
+        $intervenant = new Intervenants();
+
+        // Création de l'objet formulaire
+        $form = $this->createForm(IntervenantAjouterFormType::class, $intervenant);
+
+        // Récupération des données du formulaire
+        $form->handleRequest($request);
+
+        // Vérification de l'envoi et le donées du formulaire
+        if($form->isSubmitted() && $form->isValid())
+        {
+            // Ecriture dans la base de données
+            $this->getDoctrine()->getManager()->persist($intervenant);
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirect('/intervenants');
+        }
+        return $this->render('professeur/addProfesseur.html.twig', [
+            'IntervenantAjouterFormType' => $form->createView()
+        ]);
     }
     
 }
