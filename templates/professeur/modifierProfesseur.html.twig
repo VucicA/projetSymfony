@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification de l'intervenant {{intervenant.nomIntervenant}}{% endblock %}
+{% block title %}Modification de l'intervenant {{ intervenant.nomIntervenant }}{% endblock %}
 
 {% block body %}
-    <h1>Un Formulaire doit être placé ici</h1>
+    <h1>Modifier l'intervenant {{ intervenant.prenomIntervenant }} {{ intervenant.nomIntervenant }}</h1>
+
+    {{ form(IntervenantModifierFormType) }}
+
 {% endblock %}

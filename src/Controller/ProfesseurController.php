@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Intervenants;
+use App\Form\IntervenantModifierFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProfesseurController extends AbstractController
@@ -25,13 +27,32 @@ class ProfesseurController extends AbstractController
     /**
      * @Route("/intervenant/{id}/modifier", name="intervenant_modifier")
      */
-    public function modifier($id): Response
+    public function modifier($id, Request $request): Response
     {
         // Liste de tous les intervenants
         $intervenant = $this->getDoctrine()->getRepository(Intervenants::class)->find($id);
 
+        // On instancie l'entité Intervenants
+        //$intervenant = new Intervenants();
+
+        // Création de l'objet formulaire
+        $form = $this->createForm(IntervenantModifierFormType::class, $intervenant);
+
+        // Récupération des données du formulaire
+        $form->handleRequest($request);
+
+        // Vérification de l'envoi et le donées du formulaire
+        if($form->isSubmitted() && $form->isValid())
+        {
+            // Instanciation de doctrine
+            $doctrine = $this->getDoctrine()->getManager();
+            // Ecriture dans la base de données
+            $doctrine->flush();
+        }
+
         return $this->render('professeur/modifierProfesseur.html.twig', [
             'intervenant' => $intervenant,
+            'IntervenantModifierFormType' => $form->createView()
         ]);
     }
 
