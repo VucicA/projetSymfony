@@ -18,7 +18,7 @@
     <body>
         {% block nav %}
             <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand" href="#">PlanningSchool</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -30,20 +30,34 @@
                             <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/planning">Emploi du temps</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/intervenants">Professeur</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/module">Module</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/dispo">Disponibilité</a>
-                        </li>
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/planning">Emploi du temps</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/intervenants">Professeur</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/module">Module</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/dispo">Disponibilité</a>
+                            </li>
+                        {% endif %}  
                     </ul>
-                        <p class="form-inline my-2 my-lg-0">test</p>
+                        <div class="form-inline my-2 my-lg-0">
+                            <div class="nav-item">
+                                <a class="nav-link text-light " href="#">Connexion</a>
+                            </div>
+                            {% if app.user %}
+                                <div class="nav-item">
+                                    <a class="nav-link text-light" href="/logout">Deconnexion</a>
+                                </div>
+                                <div class="nav-item">
+                                    <a class="nav-link text-light">Test</a>
+                                </div>
+                            {% endif %}    
+                        </div>
                 </div>
                 </nav>
         {% endblock %}
