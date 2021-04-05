@@ -34,5 +34,24 @@ class ProfesseurController extends AbstractController
             'intervenant' => $intervenant,
         ]);
     }
+
+    /**
+     * @Route("/intervenant/{id}/supprimer", name="intervenant_supprimer")
+     */
+    public function Delete($id): Response
+    {
+        $intervenant = $this->getDoctrine()->getRepository(Intervenants::class)->find($id);
+        $this->getDoctrine()->getManager()->remove($intervenant);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirect('/intervenants');
+    }
+    
+    /**
+     * @Route("/intervenant/Ajouter", name="intervenant_ajouter")
+     */
+    public function Add(): Response
+    {
+        return $this->render('professeur/addProfesseur.html.twig', []);
+    }
     
 }

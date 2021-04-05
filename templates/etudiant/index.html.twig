@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Etudiants{% endblock %}
+{% block body %}
+    <h1>Liste des Etudiants</h1>
+    <table class="table">
+        <tr>
+            <td><b>Nom</b></td>
+            <td><b>Prénom</b></td>
+            <td><b>Mail</b></td>
+            <td><b>Spécialisation</b></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for alternant in alternants %}
+            <tr>
+                <td> {{ alternant.NomAlternant }} </td>
+                <td> {{ alternant.PrenomAlternant }} </td>
+                <td> {{ alternant.MailAlternant }} </td>
+                <td> {{ alternant.SpecialisationAlternant }} </td>
+                <td> <a href="{{ path('alternant_modifier', {'id':alternant.id} ) }}">Modifier</a></td>
+                <td> <a href="{{ path('alternant_modifier', {'id':alternant.id})}}">Supprimer</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href='{{ path('alternant_ajouter')}}'>Ajouter</a>
+{% endblock %}

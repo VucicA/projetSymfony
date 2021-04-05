@@ -4,21 +4,23 @@
 
 {% block body %}
     <h1>Liste des intervenants</h1>
-    <table>
+    <table class="table">
         <tr>
             <td><b>Nom</b></td>
             <td><b>Prénom</b></td>
+            <td></td>
+            <td></td>
         </tr>
         {% for intervenant in intervenants %}
             <tr>
                 <td> {{ intervenant.nomIntervenant }} </td>
                 <td> {{ intervenant.prenomIntervenant }} </td>
                 <td> <a href="{{ path('intervenant_modifier', {'id':intervenant.id} ) }}">Modifier</a></td>
-                <td> <a href=''>Supprimer</a></td>
+                <td> <a href='{{ path('intervenant_supprimer', {'id':intervenant.id} ) }}'>Supprimer</a></td>
             </tr>
         {% endfor %}
     </table>
-    <a href=''>Ajouter</a>
-
-
+    <a href="{{ path('intervenant_ajouter')}}">Ajouter</a>
 {% endblock %}
+
+

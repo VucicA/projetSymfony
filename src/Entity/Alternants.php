@@ -22,11 +22,26 @@ class Alternants
      */
     private $specialisationAlternant;
 
+
     /**
-     * @ORM\OneToOne(targetEntity=Users::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $user_id;
+    private $nomAlternant;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $prenomAlternant;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mailAlternant;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
 
     public function getId(): ?int
     {
@@ -45,14 +60,51 @@ class Alternants
         return $this;
     }
 
-    public function getUserId(): ?users
+
+    public function getNomAlternant(): ?string
     {
-        return $this->user_id;
+        return $this->nomAlternant;
     }
 
-    public function setUserId(users $user_id): self
+    public function setNomAlternant(string $nomAlternant): self
     {
-        $this->user_id = $user_id;
+        $this->nomAlternant = $nomAlternant;
+
+        return $this;
+    }
+
+    public function getPrenomAlternant(): ?string
+    {
+        return $this->prenomAlternant;
+    }
+
+    public function setPrenomAlternant(string $prenomAlternant): self
+    {
+        $this->prenomAlternant = $prenomAlternant;
+
+        return $this;
+    }
+
+    public function getMailAlternant(): ?string
+    {
+        return $this->mailAlternant;
+    }
+
+    public function setMailAlternant(string $mailAlternant): self
+    {
+        $this->mailAlternant = $mailAlternant;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }
