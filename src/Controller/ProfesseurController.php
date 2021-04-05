@@ -44,10 +44,8 @@ class ProfesseurController extends AbstractController
         // Vérification de l'envoi et le donées du formulaire
         if($form->isSubmitted() && $form->isValid())
         {
-            // Instanciation de doctrine
-            $doctrine = $this->getDoctrine()->getManager();
             // Ecriture dans la base de données
-            $doctrine->flush();
+            $this->getDoctrine()->getManager()->flush();
         }
 
         return $this->render('professeur/modifierProfesseur.html.twig', [
