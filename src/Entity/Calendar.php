@@ -35,7 +35,7 @@ class Calendar
     /**
      * @ORM\Column(type="text")
      */
-    private $descripttion;
+    private $description;
 
     /**
      * @ORM\Column(type="boolean")
@@ -103,14 +103,14 @@ class Calendar
         return $this;
     }
 
-    public function getDescripttion(): ?string
+    public function getDescription(): ?string
     {
-        return $this->descripttion;
+        return $this->description;
     }
 
-    public function setDescripttion(string $descripttion): self
+    public function setDescription(string $description): self
     {
-        $this->descripttion = $descripttion;
+        $this->description = $description;
 
         return $this;
     }
