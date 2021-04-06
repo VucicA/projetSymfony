@@ -34,10 +34,15 @@
                 timeZone: 'Europe/Paris',
                 events: {{ data|raw }},
                 editable: true,
-                eventResizableFromStart: true
+                eventResizableFromStart: true,
+                weekends:false,
+                slotMinTime: '07:00', // a start time (7am in this example)
+                slotMaxTime: '19:00', // an end time (7pm in this example)
+                
             })
 
             calendar.on('eventChange',(e) => {
+
                 let url =  `/planning/${e.event.id}/maj`
                 let donnees = {
                     "title": e.event.title,

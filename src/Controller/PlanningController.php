@@ -22,17 +22,35 @@ class PlanningController extends AbstractController
         $events = $calendarRepository->findAll(); 
         $rdvs = [];
         foreach($events as $event){
-            $rdvs[] = [
-                'id' => $event->getId(),
-                'start' => $event->getStart()->format('Y-m-d H:i:s'),
-                'end' => $event->getEnd()->format('Y-m-d H:i:s'),
-                'title' => $event->getTitle(),
-                'description' => $event->getDescription(),
-                'backgroundColor' => $event->getBackgroundColor(),
-                'borderColor' => $event->getBorderColor(),
-                'textColor' => $event->getTextColor(),
-                'allDay' => $event->getAllDay(),
-            ];
+            if($event->getFerie()){
+                $rdvs[] = [
+                    'id' => $event->getId(),
+                    'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                    'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                    'title' => $event->getTitle(),
+                    'description' => $event->getDescription(),
+                    'backgroundColor' => 'grey',
+                    'borderColor' => 'grey',
+                    'textColor' => $event->getTextColor(),
+                    'allDay' => true,
+                    'editable' => false,
+
+                ];   
+            }else{
+                $rdvs[] = [
+                    'id' => $event->getId(),
+                    'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                    'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                    'title' => $event->getTitle(),
+                    'description' => $event->getDescription(),
+                    'backgroundColor' => $event->getBackgroundColor(),
+                    'borderColor' => $event->getBorderColor(),
+                    'textColor' => $event->getTextColor(),
+                    'allDay' => $event->getAllDay(),
+                    'editable' => true,
+
+                ];
+            }   
         }
         $data = json_encode($rdvs);
         return $this->render('planning/index.html.twig', compact('data'));
