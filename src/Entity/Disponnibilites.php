@@ -37,6 +37,12 @@ class Disponnibilites
      */
     private $all_day;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Intervenants::class, inversedBy="disponnibilites")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idinter;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +92,18 @@ class Disponnibilites
     public function setAllDay(bool $all_day): self
     {
         $this->all_day = $all_day;
+
+        return $this;
+    }
+
+    public function getIdinter(): ?Intervenants
+    {
+        return $this->idinter;
+    }
+
+    public function setIdinter(?Intervenants $idinter): self
+    {
+        $this->idinter = $idinter;
 
         return $this;
     }

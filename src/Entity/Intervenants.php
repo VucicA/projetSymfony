@@ -30,9 +30,15 @@ class Intervenants
      */
     private $idintermat;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Disponnibilites::class, mappedBy="idinter")
+     */
+    private $disponnibilites;
+
     public function __construct()
     {
         $this->idintermat = new ArrayCollection();
+        $this->disponnibilites = new ArrayCollection();
     }
 
 
@@ -78,6 +84,36 @@ class Intervenants
             // set the owning side to null (unless already changed)
             if ($idintermat->getIdinter() === $this) {
                 $idintermat->setIdinter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Disponnibilites[]
+     */
+    public function getDisponnibilites(): Collection
+    {
+        return $this->disponnibilites;
+    }
+
+    public function addDisponnibilite(Disponnibilites $disponnibilite): self
+    {
+        if (!$this->disponnibilites->contains($disponnibilite)) {
+            $this->disponnibilites[] = $disponnibilite;
+            $disponnibilite->setIdinter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDisponnibilite(Disponnibilites $disponnibilite): self
+    {
+        if ($this->disponnibilites->removeElement($disponnibilite)) {
+            // set the owning side to null (unless already changed)
+            if ($disponnibilite->getIdinter() === $this) {
+                $disponnibilite->setIdinter(null);
             }
         }
 

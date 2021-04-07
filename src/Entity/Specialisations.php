@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SpecialisationsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,16 @@ class Specialisations
      * @ORM\Column(type="integer")
      */
     private $nbheure;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Alternants::class, mappedBy="idSpe")
+     */
+    private $alternants;
+
+    public function __construct()
+    {
+        $this->alternants = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +64,36 @@ class Specialisations
     public function setNbheure(int $nbheure): self
     {
         $this->nbheure = $nbheure;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Alternants[]
+     */
+    public function getAlternants(): Collection
+    {
+        return $this->alternants;
+    }
+
+    public function addAlternant(Alternants $alternant): self
+    {
+        if (!$this->alternants->contains($alternant)) {
+            $this->alternants[] = $alternant;
+            $alternant->setIdSpe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlternant(Alternants $alternant): self
+    {
+        if ($this->alternants->removeElement($alternant)) {
+            // set the owning side to null (unless already changed)
+            if ($alternant->getIdSpe() === $this) {
+                $alternant->setIdSpe(null);
+            }
+        }
 
         return $this;
     }

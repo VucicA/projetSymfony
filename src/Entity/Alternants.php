@@ -23,6 +23,11 @@ class Alternants
      */
     private $idUsers;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Specialisations::class, inversedBy="alternants")
+     */
+    private $idSpe;
+
 
     public function getId(): ?int
     {
@@ -37,6 +42,18 @@ class Alternants
     public function setIdUsers(Users $idUsers): self
     {
         $this->idUsers = $idUsers;
+
+        return $this;
+    }
+
+    public function getIdSpe(): ?Specialisations
+    {
+        return $this->idSpe;
+    }
+
+    public function setIdSpe(?Specialisations $idSpe): self
+    {
+        $this->idSpe = $idSpe;
 
         return $this;
     }
