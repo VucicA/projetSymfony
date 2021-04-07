@@ -20,95 +20,135 @@ class Matieres
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string", length=255)
      */
-    private $nomMatiere;
+    private $Nom;
+
+    /**
+     * @ORM\Column(type="string", length=7)
+     */
+    private $BackgroundColor;
+
+    /**
+     * @ORM\Column(type="string", length=7)
+     */
+    private $TextColor;
+
+    /**
+     * @ORM\Column(type="string", length=7)
+     */
+    private $BorderColor;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $nbHeuresMatiere;
+    private $nbHeure;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Heures::class, mappedBy="matiere_id")
+     * @ORM\OneToMany(targetEntity=InterWithMatiere::class, mappedBy="idmat")
      */
-    private $heures;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=intervenants::class, inversedBy="matieres")
-     */
-    private $intervenant_id;
+    private $idintermat;
 
     public function __construct()
     {
-        $this->heures = new ArrayCollection();
+        $this->idintermat = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNomMatiere(): ?string
+    public function getNom(): ?string
     {
-        return $this->nomMatiere;
+        return $this->Nom;
     }
 
-    public function setNomMatiere(string $nomMatiere): self
+    public function setNom(string $Nom): self
     {
-        $this->nomMatiere = $nomMatiere;
+        $this->Nom = $Nom;
 
         return $this;
     }
 
-    public function getNbHeuresMatiere(): ?int
+    public function getBackgroundColor(): ?string
     {
-        return $this->nbHeuresMatiere;
+        return $this->BackgroundColor;
     }
 
-    public function setNbHeuresMatiere(int $nbHeuresMatiere): self
+    public function setBackgroundColor(string $BackgroundColor): self
     {
-        $this->nbHeuresMatiere = $nbHeuresMatiere;
+        $this->BackgroundColor = $BackgroundColor;
+
+        return $this;
+    }
+
+    public function getTextColor(): ?string
+    {
+        return $this->TextColor;
+    }
+
+    public function setTextColor(string $TextColor): self
+    {
+        $this->TextColor = $TextColor;
+
+        return $this;
+    }
+
+    public function getBorderColor(): ?string
+    {
+        return $this->BorderColor;
+    }
+
+    public function setBorderColor(string $BorderColor): self
+    {
+        $this->BorderColor = $BorderColor;
+
+        return $this;
+    }
+
+    public function getNbHeure(): ?int
+    {
+        return $this->nbHeure;
+    }
+
+    public function setNbHeure(int $nbHeure): self
+    {
+        $this->nbHeure = $nbHeure;
 
         return $this;
     }
 
     /**
-     * @return Collection|Heures[]
+     * @return Collection|InterWithMatiere[]
      */
-    public function getHeures(): Collection
+    public function getIdintermat(): Collection
     {
-        return $this->heures;
+        return $this->idintermat;
     }
 
-    public function addHeure(Heures $heure): self
+    public function addIdintermat(InterWithMatiere $idintermat): self
     {
-        if (!$this->heures->contains($heure)) {
-            $this->heures[] = $heure;
-            $heure->addMatiereId($this);
+        if (!$this->idintermat->contains($idintermat)) {
+            $this->idintermat[] = $idintermat;
+            $idintermat->setIdmat($this);
         }
 
         return $this;
     }
 
-    public function removeHeure(Heures $heure): self
+    public function removeIdintermat(InterWithMatiere $idintermat): self
     {
-        if ($this->heures->removeElement($heure)) {
-            $heure->removeMatiereId($this);
+        if ($this->idintermat->removeElement($idintermat)) {
+            // set the owning side to null (unless already changed)
+            if ($idintermat->getIdmat() === $this) {
+                $idintermat->setIdmat(null);
+            }
         }
 
         return $this;
     }
 
-    public function getIntervenantId(): ?intervenants
-    {
-        return $this->intervenant_id;
-    }
-
-    public function setIntervenantId(?intervenants $intervenant_id): self
-    {
-        $this->intervenant_id = $intervenant_id;
-
-        return $this;
-    }
+  
 }

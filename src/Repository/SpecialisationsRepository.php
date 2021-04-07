@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Semaines;
+use App\Entity\Specialisations;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Semaines|null find($id, $lockMode = null, $lockVersion = null)
- * @method Semaines|null findOneBy(array $criteria, array $orderBy = null)
- * @method Semaines[]    findAll()
- * @method Semaines[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Specialisations|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Specialisations|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Specialisations[]    findAll()
+ * @method Specialisations[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SemainesRepository extends ServiceEntityRepository
+class SpecialisationsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Semaines::class);
+        parent::__construct($registry, Specialisations::class);
     }
 
     // /**
-    //  * @return Semaines[] Returns an array of Semaines objects
+    //  * @return Specialisations[] Returns an array of Specialisations objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class SemainesRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Semaines
+    public function findOneBySomeField($value): ?Specialisations
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.exampleField = :val')

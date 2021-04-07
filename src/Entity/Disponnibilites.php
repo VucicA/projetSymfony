@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CalendarRepository;
+use App\Repository\DisponnibilitesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CalendarRepository::class)
+ * @ORM\Entity(repositoryClass=DisponnibilitesRepository::class)
  */
-class Calendar
+class Disponnibilites
 {
     /**
      * @ORM\Id
@@ -16,11 +16,6 @@ class Calendar
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
 
     /**
      * @ORM\Column(type="datetime")
@@ -42,32 +37,9 @@ class Calendar
      */
     private $all_day;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $ferie;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Matieres::class)
-     */
-    private $IdMatiere;
-
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     public function getStart(): ?\DateTimeInterface
@@ -117,29 +89,4 @@ class Calendar
 
         return $this;
     }
-
-    public function getFerie(): ?bool
-    {
-        return $this->ferie;
-    }
-
-    public function setFerie(bool $ferie): self
-    {
-        $this->ferie = $ferie;
-
-        return $this;
-    }
-
-    public function getIdMatiere(): ?Matieres
-    {
-        return $this->IdMatiere;
-    }
-
-    public function setIdMatiere(?Matieres $IdMatiere): self
-    {
-        $this->IdMatiere = $IdMatiere;
-
-        return $this;
-    }
-
 }

@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class Users implements UserInterface
+class Users
 {
     /**
      * @ORM\Id
@@ -21,34 +21,57 @@ class Users implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $prenom;
+
+    /**
+     * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="string", length=255)
      */
-    private $nomUser;
-
-    /**
-     * @ORM\Column(type="string", length=45)
-     */
-    private $prenomUser;
+    private $role;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -63,41 +86,9 @@ class Users implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUsername(): string
+    public function getPassword(): ?string
     {
-        return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getPassword(): string
-    {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -107,47 +98,17 @@ class Users implements UserInterface
         return $this;
     }
 
-    /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
-     */
-    public function getSalt(): ?string
+    public function getRole(): ?string
     {
-        return null;
+        return $this->role;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
+    public function setRole(string $role): self
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    public function getNomUser(): ?string
-    {
-        return $this->nomUser;
-    }
-
-    public function setNomUser(string $nomUser): self
-    {
-        $this->nomUser = $nomUser;
+        $this->role = $role;
 
         return $this;
     }
 
-    public function getPrenomUser(): ?string
-    {
-        return $this->prenomUser;
-    }
 
-    public function setPrenomUser(string $prenomUser): self
-    {
-        $this->prenomUser = $prenomUser;
-
-        return $this;
-    }
 }

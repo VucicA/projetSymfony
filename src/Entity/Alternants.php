@@ -18,94 +18,28 @@ class Alternants
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=45)
+     * @ORM\OneToOne(targetEntity=Users::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $specialisationAlternant;
+    private $idUsers;
 
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nomAlternant;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $prenomAlternant;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $mailAlternant;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSpecialisationAlternant(): ?string
+    public function getIdUsers(): ?Users
     {
-        return $this->specialisationAlternant;
+        return $this->idUsers;
     }
 
-    public function setSpecialisationAlternant(string $specialisationAlternant): self
+    public function setIdUsers(Users $idUsers): self
     {
-        $this->specialisationAlternant = $specialisationAlternant;
+        $this->idUsers = $idUsers;
 
         return $this;
     }
 
-
-    public function getNomAlternant(): ?string
-    {
-        return $this->nomAlternant;
-    }
-
-    public function setNomAlternant(string $nomAlternant): self
-    {
-        $this->nomAlternant = $nomAlternant;
-
-        return $this;
-    }
-
-    public function getPrenomAlternant(): ?string
-    {
-        return $this->prenomAlternant;
-    }
-
-    public function setPrenomAlternant(string $prenomAlternant): self
-    {
-        $this->prenomAlternant = $prenomAlternant;
-
-        return $this;
-    }
-
-    public function getMailAlternant(): ?string
-    {
-        return $this->mailAlternant;
-    }
-
-    public function setMailAlternant(string $mailAlternant): self
-    {
-        $this->mailAlternant = $mailAlternant;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
+ 
 }
