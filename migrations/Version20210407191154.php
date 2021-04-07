@@ -20,7 +20,21 @@ final class Version20210407191154 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE users ADD nom VARCHAR(255) NOT NULL, ADD prenom VARCHAR(255) NOT NULL, ADD role VARCHAR(255) NOT NULL, DROP role, DROP nom, DROP prenom, CHANGE email email VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE heures_intervenants DROP FOREIGN KEY FK_B8F018F9D05B21E6');
+        $this->addSql('ALTER TABLE heures_matieres DROP FOREIGN KEY FK_44139DC6D05B21E6');
+        $this->addSql('ALTER TABLE heures DROP FOREIGN KEY FK_DEA5875D7D6C3F24');
+        $this->addSql('ALTER TABLE jours DROP FOREIGN KEY FK_F0DAEEEDB54FCCFD');
+        $this->addSql('CREATE TABLE disponnibilites (id INT AUTO_INCREMENT NOT NULL, start DATETIME NOT NULL, end DATETIME NOT NULL, description LONGTEXT NOT NULL, all_day TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE inter_with_matiere (id INT AUTO_INCREMENT NOT NULL, idinter_id INT NOT NULL, idmat_id INT NOT NULL, INDEX IDX_F72B8EF4428DD893 (idinter_id), INDEX IDX_F72B8EF4B81A659F (idmat_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE specialisations (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, nbheure INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE inter_with_matiere ADD CONSTRAINT FK_F72B8EF4428DD893 FOREIGN KEY (idinter_id) REFERENCES intervenants (id)');
+        $this->addSql('ALTER TABLE inter_with_matiere ADD CONSTRAINT FK_F72B8EF4B81A659F FOREIGN KEY (idmat_id) REFERENCES matieres (id)');
+        $this->addSql('DROP TABLE heures');
+        $this->addSql('DROP TABLE heures_intervenants');
+        $this->addSql('DROP TABLE heures_matieres');
+        $this->addSql('DROP TABLE jours');
+        $this->addSql('DROP TABLE semaines');
+        $this->addSql('ALTER TABLE alternants ADD id_users_id INT NOT NULL, DROP specialisation_alternant, DROP nom_alternant, DROP prenom_alternant, DROP mail_alternant, DROP password');
         $this->addSql('ALTER TABLE alternants ADD CONSTRAINT FK_B508067E376858A8 FOREIGN KEY (id_users_id) REFERENCES users (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B508067E376858A8 ON alternants (id_users_id)');
         $this->addSql('ALTER TABLE calendar ADD id_matiere_id INT DEFAULT NULL, DROP background_color, DROP border_color, DROP text_color');
@@ -38,7 +52,7 @@ final class Version20210407191154 extends AbstractMigration
         $this->addSql('ALTER TABLE secretaires ADD CONSTRAINT FK_9DA0A81D376858A8 FOREIGN KEY (id_users_id) REFERENCES users (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_9DA0A81D376858A8 ON secretaires (id_users_id)');
         $this->addSql('DROP INDEX UNIQ_1483A5E9E7927C74 ON users');
-        
+        $this->addSql('ALTER TABLE users ADD nom VARCHAR(255) NOT NULL, ADD prenom VARCHAR(255) NOT NULL, ADD role VARCHAR(255) NOT NULL, DROP roles, DROP nom_user, DROP prenom_user, CHANGE email email VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema) : void
