@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Intervenants;
+use App\Entity\Users;
 use App\Form\IntervenantModifierFormType;
 use App\Form\IntervenantAjouterFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,9 +18,16 @@ class ProfesseurController extends AbstractController
      */
     public function index(): Response
     {
-        // Liste de tous les intervenants
-        $intervenants = $this->getDoctrine()->getRepository(Intervenants::class)->findAll();
+        $intervenants = [];
 
+        $users = $this->getDoctrine()->getRepository(Users::class)->findBy(['role' => 'Intervenant']);
+        // Liste de tous les intervenants
+
+        foreach($user as $users){
+            $id = $user->getId();
+            $intervenants = $this->getDoctrine()->getRepository(Intervenants::class)->findBy(['id_user_id' => $id]);
+        }
+        
         return $this->render('professeur/index.html.twig', [
             'intervenants' => $intervenants,
         ]);
@@ -30,7 +38,7 @@ class ProfesseurController extends AbstractController
      */
     public function modifier($id, Request $request): Response
     {
-        // Liste de tous les intervenants
+        // Recupere un intervenant par son ID
         $intervenant = $this->getDoctrine()->getRepository(Intervenants::class)->find($id);
 
         // On instancie l'entité Intervenants
@@ -62,7 +70,12 @@ class ProfesseurController extends AbstractController
     public function Delete($id): Response
     {
         $intervenant = $this->getDoctrine()->getRepository(Intervenants::class)->find($id);
+
+        $idUser = $intervenant->getIdUsers();
+        $user = $this->getDoctrine()->getRepository(Users::class)->find($id);
+
         $this->getDoctrine()->getManager()->remove($intervenant);
+        $this->getDoctrine()->getManager()->remove($user);
         $this->getDoctrine()->getManager()->flush();
         return $this->redirect('/intervenants');
     }
