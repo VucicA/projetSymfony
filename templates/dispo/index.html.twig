@@ -1,20 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DispoController!{% endblock %}
+{% block title %}Dispo{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/main.min.css" integrity="sha256-uq9PNlMzB+1h01Ij9cx7zeE2OR2pLAfRw3uUUOOPKdA=" crossorigin="anonymous">
+    <style>
+        #calendrier{
+            width: 80%;
+            margin: auto;
+        }
+
+    </style>
+{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <a type="button" class="btn btn-dark" href="{{ path('disponnibilite_list')}}">Liste des Disponnibilités</a>
+    <div id="calendrier">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'E:/projet/symfony/projetSymfony/src/Controller/DispoController.php'|file_link(0) }}">src/Controller/DispoController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'E:/projet/symfony/projetSymfony/templates/dispo/index.html.twig'|file_link(0) }}">templates/dispo/index.html.twig</a></code></li>
-    </ul>
-</div>
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/main.min.js" integrity="sha256-ekrJn2FeZaiUFq99QswpQCUTME/HxaDfX7R8INzKJGE=" crossorigin="anonymous"></script>
+    <script>
+        window.onload = () => {
+            let dispoElt = document.querySelector("#calendrier")
+
+            let dispo = new FullCalendar.Calendar(dispoElt, {
+                initialView: 'timeGridWeek',
+                locale: 'fr',
+                timeZone: 'Europe/Paris',
+                events: {{ data|raw }},
+                editable: true,
+                eventResizableFromStart: true,
+                weekends:false,
+                slotMinTime: '07:00', // a start time (7am in this example)
+                slotMaxTime: '19:00', // an end time (7pm in this example)
+                
+            })
+
+            dispo.on('eventChange',(e) => {
+
+                let url =  `/dispo/${e.event.id}/maj`
+                let donnees = {
+                    "description": e.event.extendedProps.description,
+                    "start": e.event.start,
+                    "end": e.event.end,
+                    "allDay": e.event.allDay,
+                    "idInter" : e.event.extendedProps.idinter,
+                }
+
+                let xhr = new XMLHttpRequest
+
+                xhr.open("PUT", url)
+                xhr.send(JSON.stringify(donnees))
+            })
+            
+            dispo.render();
+        }
+
+    </script>
+
 {% endblock %}
