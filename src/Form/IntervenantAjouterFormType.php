@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Form;
-
+use App\Entity\Users;
 use App\Entity\Intervenants;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,13 +17,13 @@ class IntervenantAjouterFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('nomIntervenant', TextType::class,[
+        ->add('nom', TextType::class,[
             'label' => 'Nom'
         ])
-        ->add('prenomIntervenant', TextType::class,[
+        ->add('prenom', TextType::class,[
             'label' => 'Prénom'
         ])
-        ->add('mailIntervenant', EmailType::class,[
+        ->add('email', EmailType::class,[
             'label' => 'Mail'
         ])
         ->add('password', PasswordType::class,[
@@ -35,7 +36,7 @@ class IntervenantAjouterFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Intervenants::class,
+            'data_class' => Users::class,
         ]);
     }
 }

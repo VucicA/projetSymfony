@@ -20,13 +20,13 @@ class ProfesseurController extends AbstractController
     {
         $intervenants = [];
 
-        $users = $this->getDoctrine()->getRepository(Users::class)->findBy(['role' => 'Intervenant']);
+        $intervenants = $this->getDoctrine()->getRepository(Users::class)->findBy(['role' => 'Intervenant']);
         // Liste de tous les intervenants
 
-        foreach($user as $users){
-            $id = $user->getId();
-            $intervenants = $this->getDoctrine()->getRepository(Intervenants::class)->findBy(['id_user_id' => $id]);
-        }
+        // foreach($users as $user){
+        //     $id = $user->getId();
+        //     $intervenants = $this->getDoctrine()->getRepository(Intervenants::class)->findBy(['IdUsers' => $id]);
+        // }
         
         return $this->render('professeur/index.html.twig', [
             'intervenants' => $intervenants,
@@ -39,7 +39,7 @@ class ProfesseurController extends AbstractController
     public function modifier($id, Request $request): Response
     {
         // Recupere un intervenant par son ID
-        $intervenant = $this->getDoctrine()->getRepository(Intervenants::class)->find($id);
+        $intervenant = $this->getDoctrine()->getRepository(Users::class)->find($id);
 
         // On instancie l'entité Intervenants
         //$intervenant = new Intervenants();
@@ -69,12 +69,13 @@ class ProfesseurController extends AbstractController
      */
     public function Delete($id): Response
     {
-        $intervenant = $this->getDoctrine()->getRepository(Intervenants::class)->find($id);
+        $intervenant = $this->getDoctrine()->getRepository(Intervenants::class)->findOneBy(['IdUsers' => $id]);
 
-        $idUser = $intervenant->getIdUsers();
+        //$idUser = $intervenant->getIdUsers();
         $user = $this->getDoctrine()->getRepository(Users::class)->find($id);
 
         $this->getDoctrine()->getManager()->remove($intervenant);
+        $this->getDoctrine()->getManager()->flush();
         $this->getDoctrine()->getManager()->remove($user);
         $this->getDoctrine()->getManager()->flush();
         return $this->redirect('/intervenants');
@@ -87,17 +88,24 @@ class ProfesseurController extends AbstractController
     {   
         // On instancie l'entité Intervenants
         $intervenant = new Intervenants();
+        $user = new Users();
 
         // Création de l'objet formulaire
-        $form = $this->createForm(IntervenantAjouterFormType::class, $intervenant);
+        $form = $this->createForm(IntervenantAjouterFormType::class, $user);
 
         // Récupération des données du formulaire
         $form->handleRequest($request);
 
-        // Vérification de l'envoi et le donées du formulaire
+        // Vérification de l'envoi et le données du formulaire
         if($form->isSubmitted() && $form->isValid())
         {
             // Ecriture dans la base de données
+            $this->getDoctrine()->getManager()->persist($user);
+            $user->setRole('Intervenant');
+            $this->getDoctrine()->getManager()->flush();
+
+            $intervenant->setIdUsers($this->getDoctrine()->getRepository(Users::class)->findOneBy(['email' => $user->getEmail()]));
+
             $this->getDoctrine()->getManager()->persist($intervenant);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirect('/intervenants');

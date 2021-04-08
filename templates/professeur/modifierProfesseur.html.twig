@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification de l'intervenant {{ intervenant.nomIntervenant }}{% endblock %}
+{% block title %}Modification de l'intervenant {{ intervenant.nom }}{% endblock %}
 
 {% block body %}
-    <h1>Modifier l'intervenant {{ intervenant.prenomIntervenant }} {{ intervenant.nomIntervenant }}</h1>
+    <h1>Modifier l'intervenant {{ intervenant.prenom }} {{ intervenant.nom }}</h1>
 
     {{ form(IntervenantModifierFormType) }}
 
