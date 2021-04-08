@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Matiere;
+use App\Entity\Matieres;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,14 +22,14 @@ class  MatiereAjouterFormType extends AbstractType
         ->add('NbHeure', TextType::class,[
             'label' => 'Nombre d\'heure'
         ])
-        ->add('background', ColorType::class,[
+        ->add('textcolor', ColorType::class,[
+            'label' => 'Couleur du texte'
+        ])
+        ->add('backgroundcolor', ColorType::class,[
             'label' => 'Couleur de fond'
         ])
         ->add('bordercolor', ColorType::class,[
             'label' => 'Couleur du contour'
-        ])
-        ->add('textcolor', ColorType::class,[
-            'label' => 'Couleur du texte'
         ])
         ->add('Envoyer', SubmitType::class)
         ;
@@ -38,7 +38,7 @@ class  MatiereAjouterFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Matiere::class,
+            'data_class' => Matieres::class,
         ]);
     }
 }

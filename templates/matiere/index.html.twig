@@ -1,20 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ModuleController!{% endblock %}
+{% block title %}Liste des matieres{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'E:/projet/symfony/projetSymfony/src/Controller/ModuleController.php'|file_link(0) }}">src/Controller/ModuleController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'E:/projet/symfony/projetSymfony/templates/module/index.html.twig'|file_link(0) }}">templates/module/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <h1>Liste des matieres</h1>
+    <table class="table">
+        <tr>
+            <td><b>Nom</b></td>
+            <td><b>Nombre d'heure</b></td>
+            <td><b>Couleur du texte</b></td>
+            <td><b>Couleur du fond</b></td>
+            <td><b>Couleur du contour</b></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for matiere in matieres %}
+            <tr>
+                <td> {{ matiere.nom }} </td>
+                <td> {{ matiere.nbHeure }} </td>
+                <td> {{ matiere.textColor }} </td>
+                <td> {{ matiere.backgroundColor }} </td>
+                <td> {{ matiere.borderColor }} </td>
+                <td> <a href="{{ path('matiere_modifier', {'id':matiere.id} ) }}">Modifier</a></td>
+                <td> <a href='{{ path('matiere_supprimer', {'id':matiere.id} ) }}'>Supprimer</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ path('matiere_ajouter')}}">Ajouter</a>
 {% endblock %}
