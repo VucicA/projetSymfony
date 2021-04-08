@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Matieres;
+use App\Form\MatiereModifierFormType;
+use App\Form\MatiereAjouterFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MatiereController extends AbstractController
 {
     /**
-     * @Route("/matiere", name="matiere")
+     * @Route("/matieres", name="matieres")
      */
     public function index(): Response
     {
@@ -64,7 +68,7 @@ class MatiereController extends AbstractController
     }
     
     /**
-     * @Route("/matiere/Ajouter", name="matiere_ajouter")
+     * @Route("/matiere/ajouter", name="matiere_ajouter")
      */
     public function Add(Request $request): Response
     {   
