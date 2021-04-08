@@ -36,16 +36,12 @@
                 <td>{{ calendar.ferie ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>Background_color</th>
-                <td>{{ calendar.backgroundColor }}</td>
+                <th>Matiere</th>
+                <td>{{ calendar.idMatiere.nom }}</td>
             </tr>
             <tr>
-                <th>Border_color</th>
-                <td>{{ calendar.borderColor }}</td>
-            </tr>
-            <tr>
-                <th>Text_color</th>
-                <td>{{ calendar.textColor }}</td>
+                <th>Intervenant</th>
+                <td>{{ calendar.idInter.IdUsers.nom }}</td>
             </tr>
         </tbody>
     </table>

@@ -12,6 +12,9 @@
             <td><b>Fin</b></td>
             <td><b>Description</b></td>
             <td><b>Toute la journée</b></td>
+            <td><b>Fèrie</b></td>
+            <td><b>Matiere</b></td>
+            <td><b>Intervenant</b></td>
             <td></td>
             <td></td>
         </tr>
@@ -23,6 +26,10 @@
                 <td> {{ calendar.end ? calendar.end|date('Y-m-d H:i:s') : ''}} </td>
                 <td> {{ calendar.description }} </td>
                 <td> {{ calendar.allDay ? 'Yes' : 'No' }} </td>
+                <td> {{ calendar.ferie ? 'Yes' : 'No' }} </td>
+                <td> {{ calendar.idMatiere.nom}}</td>
+                <td> {{ calendar.idInter.IdUsers.nom}}</td>
+
                 <td> <a href="{{ path('planning_edit', {'id':calendar.id} ) }}">Modifier</a></td>
                 <td> <a href='{{ path('planning_delete', {'id':calendar.id} ) }}'>Supprimer</a></td>
             </tr>

@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Calendar;
+use App\Entity\Matieres;
+use App\Entity\Intervenants;
 use App\Form\CalendarType;
 use App\Repository\CalendarRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,9 +33,11 @@ class PlanningController extends AbstractController
                     'description' => $event->getDescription(),
                     'backgroundColor' => 'grey',
                     'borderColor' => 'grey',
-                    'textColor' => $event->getTextColor(),
+                    'textColor' =>$this->getDoctrine()->getRepository(Matieres::class)->find($event->getIdMatiere())->getTextColor(),
                     'allDay' => true,
                     'editable' => false,
+                    'idMatiere' => $event->getIdMatiere()->getId(),
+                    'idinter' => $event->getIdInter()->getId(),
 
                 ];   
             }else{
@@ -43,11 +47,13 @@ class PlanningController extends AbstractController
                     'end' => $event->getEnd()->format('Y-m-d H:i:s'),
                     'title' => $event->getTitle(),
                     'description' => $event->getDescription(),
-                    'backgroundColor' => $event->getBackgroundColor(),
-                    'borderColor' => $event->getBorderColor(),
-                    'textColor' => $event->getTextColor(),
+                    'backgroundColor' => $this->getDoctrine()->getRepository(Matieres::class)->find($event->getIdMatiere())->getBackgroundColor(),
+                    'borderColor' =>$this->getDoctrine()->getRepository(Matieres::class)->find($event->getIdMatiere())->getBorderColor(),
+                    'textColor' => $this->getDoctrine()->getRepository(Matieres::class)->find($event->getIdMatiere())->getTextColor(),
                     'allDay' => $event->getAllDay(),
                     'editable' => true,
+                    'idMatiere' => $event->getIdMatiere()->getId(),
+                    'idInter' => $event->getIdInter()->getId(),
 
                 ];
             }   
@@ -143,10 +149,7 @@ class PlanningController extends AbstractController
 
         if( isset($donnees->title) && !empty($donnees->title) &&
             isset($donnees->start) && !empty($donnees->start) &&
-            isset($donnees->description) && !empty($donnees->description) &&
-            isset($donnees->backgroundColor) && !empty($donnees->backgroundColor) &&
-            isset($donnees->borderColor) && !empty($donnees->borderColor) &&
-            isset($donnees->textColor) && !empty($donnees->textColor) 
+            isset($donnees->description) && !empty($donnees->description)
         )
         {
             $code=200;
@@ -164,9 +167,8 @@ class PlanningController extends AbstractController
                 $calendar->setEnd(new DateTime($donnees->end));
             }
             $calendar->setAllDay($donnees->allDay);
-            $calendar->setBackgroundColor($donnees->backgroundColor);
-            $calendar->setBorderColor($donnees->borderColor);
-            $calendar->setTextColor($donnees->textColor);
+            $calendar->setIdMatiere($this->getDoctrine()->getRepository(Matieres::class)->find($donnees->idMatiere));
+            $calendar->setIdInter($this->getDoctrine()->getRepository(Intervenants::class)->find($donnees->idInter));
 
             $this->getDoctrine()->getManager()->persist($calendar);
             $this->getDoctrine()->getManager()->flush();

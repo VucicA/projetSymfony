@@ -8,6 +8,7 @@ use App\Entity\Intervenants;
 use App\Entity\Users;
 use App\Entity\Alternants;
 use App\Entity\Secretaires;
+use App\Entity\Matieres;
 
 class PlanningFixtures extends Fixture
 {
@@ -46,7 +47,15 @@ class PlanningFixtures extends Fixture
                 $manager->flush();
             }
 
-
+            $matiere = new Matieres();
+            $matiere->setNom("Matiere $i");
+            $matiere->setBackgroundColor("#000000");
+            $matiere->setBorderColor("#000000");
+            $matiere->setTextColor("#FFFFFF");
+            $matiere->setNbHeure(30);
+            $manager->persist($matiere);
+            $manager->flush();
+            
         }
 
  

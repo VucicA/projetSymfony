@@ -35,10 +35,16 @@ class Intervenants
      */
     private $disponnibilites;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Calendar::class, mappedBy="IdInter")
+     */
+    private $calendars;
+
     public function __construct()
     {
         $this->idintermat = new ArrayCollection();
         $this->disponnibilites = new ArrayCollection();
+        $this->calendars = new ArrayCollection();
     }
 
 
@@ -114,6 +120,36 @@ class Intervenants
             // set the owning side to null (unless already changed)
             if ($disponnibilite->getIdinter() === $this) {
                 $disponnibilite->setIdinter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Calendar[]
+     */
+    public function getCalendars(): Collection
+    {
+        return $this->calendars;
+    }
+
+    public function addCalendar(Calendar $calendar): self
+    {
+        if (!$this->calendars->contains($calendar)) {
+            $this->calendars[] = $calendar;
+            $calendar->setIdInter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCalendar(Calendar $calendar): self
+    {
+        if ($this->calendars->removeElement($calendar)) {
+            // set the owning side to null (unless already changed)
+            if ($calendar->getIdInter() === $this) {
+                $calendar->setIdInter(null);
             }
         }
 

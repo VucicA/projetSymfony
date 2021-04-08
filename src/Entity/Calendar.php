@@ -52,6 +52,12 @@ class Calendar
      */
     private $IdMatiere;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Intervenants::class, inversedBy="calendars")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $IdInter;
+
 
     public function getId(): ?int
     {
@@ -138,6 +144,18 @@ class Calendar
     public function setIdMatiere(?Matieres $IdMatiere): self
     {
         $this->IdMatiere = $IdMatiere;
+
+        return $this;
+    }
+
+    public function getIdInter(): ?Intervenants
+    {
+        return $this->IdInter;
+    }
+
+    public function setIdInter(?Intervenants $IdInter): self
+    {
+        $this->IdInter = $IdInter;
 
         return $this;
     }
