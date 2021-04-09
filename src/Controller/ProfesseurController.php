@@ -42,12 +42,13 @@ class ProfesseurController extends AbstractController
     {
         // Recupere un intervenant par son ID
         $intervenant = $this->getDoctrine()->getRepository(Users::class)->find($id);
-        $interWithMat = $this->getDoctrine()->getRepository(InterWithMatiere::class)->findBy(['idInter']);
+        $interWithMat = $this->getDoctrine()->getRepository(InterWithMatiere::class)->findBy(['idinter' => $this->getDoctrine()->getRepository(Intervenants::class)->findOneBy(['IdUsers' => $intervenant->getId()])->getId()]);
         // On instancie l'entité Intervenants
         //$intervenant = new Intervenants();
+        $matiere = new Matieres();
 
         // Création de l'objet formulaire
-        $form = $this->createForm(IntervenantModifierFormType::class, null, []);
+        $form = $this->createForm(IntervenantModifierFormType::class, null, ['intervenant' => $intervenant]);
 
         // Récupération des données du formulaire
         $form->handleRequest($request);
@@ -55,7 +56,20 @@ class ProfesseurController extends AbstractController
         // Vérification de l'envoi et le donées du formulaire
         if($form->isSubmitted() && $form->isValid())
         {
-            // Ecriture dans la base de données
+            if($form->get('idmatiere')->getData() != null && $form->get('idmatiere')->getData() != []){
+                // Ecriture dans la base de données
+                foreach($interWithMat as $liaison){
+                    $this->getDoctrine()->getManager()->remove($liaison);
+                    $this->getDoctrine()->getManager()->flush();
+                }
+                foreach($form->get('idmatiere')->getData() as $matiere ){
+                    $matiereWithInter = new InterWithMatiere(); 
+                    $matiereWithInter->setIdmat($matiere);
+                    $matiereWithInter->setIdinter($this->getDoctrine()->getRepository(Intervenants::class)->findOneBy(['IdUsers' => $intervenant->getId()]));
+                    $this->getDoctrine()->getManager()->persist($matiereWithInter);
+                    $this->getDoctrine()->getManager()->flush();
+                }
+            }
             $this->getDoctrine()->getManager()->flush();
             return $this->redirect('/intervenants');
         }
@@ -72,7 +86,7 @@ class ProfesseurController extends AbstractController
     public function Delete($id): Response
     {
         $intervenant = $this->getDoctrine()->getRepository(Intervenants::class)->findOneBy(['IdUsers' => $id]);
-
+        
         //$idUser = $intervenant->getIdUsers();
         $user = $this->getDoctrine()->getRepository(Users::class)->find($id);
 
