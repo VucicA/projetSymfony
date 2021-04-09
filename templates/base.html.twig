@@ -30,39 +30,47 @@
                             <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        {% if app.user %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="/planning">Emploi du temps</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/intervenants">Professeur</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/module">Module</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/dispo">Disponibilité</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/dispo">Etudiant</a>
-                            </li>
-                        {% endif %}  
-                    </ul>
-                        <div class="form-inline my-2 my-lg-0">
-                            <div class="nav-item">
-                                <a class="nav-link text-light " href="/login">Connexion</a>
-                            </div>
-                            {% if app.user %}
+                        {% set id = app.session.get('id') %}
+                        {% if id != 0 %}
+                            {% set role = app.session.get('role') %}
+                            {% if role == 'Secretaire' %}
+ 
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/planning">Emploi du temps</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/intervenants">Professeur</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/module">Module</a>
+                                </li>
+                                {#
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/dispo">Disponibilité</a>
+                                </li>
+                                #}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/dispo">Etudiant</a>
+                                </li>
+                                {% elseif role == 'Intervenant' %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/dispo">Disponibilité</a>
+                                </li>
+                            {% endif %}
+                            </ul> 
                                 <div class="nav-item">
-                                    <a class="nav-link text-light" href="/logout">Deconnexion</a>
+                                    <a class="nav-link text-light" href="/deco">Deconnexion</a>
                                 </div>
+                        {% else %}
+                        </ul> 
+                            <div class="form-inline my-2 my-lg-0">
                                 <div class="nav-item">
-                                    <a class="nav-link text-light">Test</a>
-                                </div>
-                            {% endif %}    
-                        </div>
+                                    <a class="nav-link text-light " href="/login">Connexion</a>
+                                </div>                          
+                        {% endif %} 
+                      
                 </div>
-                </nav>
+            </nav>
         {% endblock %}
         <div class="container">
           {% block body %}{% endblock %}

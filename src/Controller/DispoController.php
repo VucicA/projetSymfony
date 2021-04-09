@@ -12,30 +12,55 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
+
+
 class DispoController extends AbstractController
 {
    /**
      * @Route("/dispo", name="disponnibilite", methods={"GET"})
      */
-    public function index(DisponnibilitesRepository $dispoRepository): Response
+    public function index(Session $session, DisponnibilitesRepository $dispoRepository): Response
     {
-        $events = $dispoRepository->findAll(); 
-        $dispos = [];
-        foreach($events as $event){
-                $dispos[] = [
-                    'id' => $event->getId(),
-                    'start' => $event->getStart()->format('Y-m-d H:i:s'),
-                    'end' => $event->getEnd()->format('Y-m-d H:i:s'),
-                    'title' => 'Indispo',
-                    'description' => $event->getDescription(),
-                    'backgroundColor' => 'black',
-                    'borderColor' => 'black',
-                    'textColor' =>'white',
-                    'allDay' => $event->getAllDay(),
-                    'idinter' => $event->getIdinter()->getId(),
-
-                ];   
+        if($session->get('role') == 'Intervenant')
+        {
+            $event = $dispoRepository->findOneBy(['role', 'Intervenant']); 
+            $dispo = [
+                'id' => $event->getId(),
+                'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                'title' => 'Indispo',
+                'description' => $event->getDescription(),
+                'backgroundColor' => 'black',
+                'borderColor' => 'black',
+                'textColor' =>'white',
+                'allDay' => $event->getAllDay(),
+                'idinter' => $event->getIdinter()->getId(),
+            ];
         }
+        else
+        {
+            $events = $dispoRepository->findAll(); 
+            $dispos = [];
+            foreach($events as $event){
+                    $dispos[] = [
+                        'id' => $event->getId(),
+                        'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                        'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                        'title' => 'Indispo',
+                        'description' => $event->getDescription(),
+                        'backgroundColor' => 'black',
+                        'borderColor' => 'black',
+                        'textColor' =>'white',
+                        'allDay' => $event->getAllDay(),
+                        'idinter' => $event->getIdinter()->getId(),
+
+                    ];   
+            }
+        }
+
+        
         $data = json_encode($dispos);
         return $this->render('dispo/index.html.twig', compact('data'));
     }

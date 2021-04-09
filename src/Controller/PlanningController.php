@@ -13,17 +13,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
+
 class PlanningController extends AbstractController
 {
 
     /**
      * @Route("/planning", name="planning", methods={"GET"})
      */
-    public function index(CalendarRepository $calendarRepository): Response
+    public function index(Session $session, CalendarRepository $calendarRepository): Response
     {
-        $events = $calendarRepository->findAll(); 
-        $rdvs = [];
-        foreach($events as $event){
+        if($session->get('role') == 'Intervenant')
+        {
+            $event = $calendarRepository->findOneBy(['role', 'Intervenant']); 
             if($event->getFerie()){
                 $rdvs[] = [
                     'id' => $event->getId(),
@@ -55,12 +58,52 @@ class PlanningController extends AbstractController
                     'idMatiere' => $event->getIdMatiere()->getId(),
                     'idInter' => $event->getIdInter()->getId(),
 
-                ];
-            }   
+                    ];
+                }
         }
+        else
+        {
+            $events = $calendarRepository->findAll(); 
+            $rdvs = [];
+            foreach($events as $event){
+                if($event->getFerie()){
+                    $rdvs[] = [
+                        'id' => $event->getId(),
+                        'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                        'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                        'title' => $event->getTitle(),
+                        'description' => $event->getDescription(),
+                        'backgroundColor' => 'grey',
+                        'borderColor' => 'grey',
+                        'textColor' =>$this->getDoctrine()->getRepository(Matieres::class)->find($event->getIdMatiere())->getTextColor(),
+                        'allDay' => true,
+                        'editable' => false,
+                        'idMatiere' => $event->getIdMatiere()->getId(),
+                        'idinter' => $event->getIdInter()->getId(),
+
+                    ];   
+                }else{
+                    $rdvs[] = [
+                        'id' => $event->getId(),
+                        'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                        'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                        'title' => $event->getTitle(),
+                        'description' => $event->getDescription(),
+                        'backgroundColor' => $this->getDoctrine()->getRepository(Matieres::class)->find($event->getIdMatiere())->getBackgroundColor(),
+                        'borderColor' =>$this->getDoctrine()->getRepository(Matieres::class)->find($event->getIdMatiere())->getBorderColor(),
+                        'textColor' => $this->getDoctrine()->getRepository(Matieres::class)->find($event->getIdMatiere())->getTextColor(),
+                        'allDay' => $event->getAllDay(),
+                        'editable' => true,
+                        'idMatiere' => $event->getIdMatiere()->getId(),
+                        'idInter' => $event->getIdInter()->getId(),
+
+                        ];
+                    } 
+                }
+            }
         $data = json_encode($rdvs);
         return $this->render('planning/index.html.twig', compact('data'));
-    }
+        }   
 
     /**
      * @Route("planning/list", name="planning_list", methods={"GET"})
