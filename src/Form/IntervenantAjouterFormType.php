@@ -3,13 +3,16 @@
 namespace App\Form;
 use App\Entity\Users;
 use App\Entity\Intervenants;
+use App\Entity\Matieres;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class IntervenantAjouterFormType extends AbstractType
@@ -29,14 +32,20 @@ class IntervenantAjouterFormType extends AbstractType
         ->add('password', PasswordType::class,[
             'label' => 'Mot de passe'
         ])
-        ->add('Envoyer', SubmitType::class)
-        ;
+        ->add('idmatiere', EntityType::class, 
+                   array(
+                    'class' => Matieres::class,
+                    'choice_label' => 'nom',
+                    'expanded' => true,
+                    'multiple' => true
+                   )
+            )
+        ->add('Envoyer', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Users::class,
         ]);
     }
 }

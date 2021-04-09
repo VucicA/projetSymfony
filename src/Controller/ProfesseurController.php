@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Intervenants;
 use App\Entity\Users;
+use App\Entity\InterWithMatiere;
+use App\Entity\Matieres;
 use App\Form\IntervenantModifierFormType;
 use App\Form\IntervenantAjouterFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,12 +42,12 @@ class ProfesseurController extends AbstractController
     {
         // Recupere un intervenant par son ID
         $intervenant = $this->getDoctrine()->getRepository(Users::class)->find($id);
-
+        $interWithMat = $this->getDoctrine()->getRepository(InterWithMatiere::class)->findBy(['idInter']);
         // On instancie l'entité Intervenants
         //$intervenant = new Intervenants();
 
         // Création de l'objet formulaire
-        $form = $this->createForm(IntervenantModifierFormType::class, $intervenant);
+        $form = $this->createForm(IntervenantModifierFormType::class, null, []);
 
         // Récupération des données du formulaire
         $form->handleRequest($request);
@@ -89,17 +91,24 @@ class ProfesseurController extends AbstractController
         // On instancie l'entité Intervenants
         $intervenant = new Intervenants();
         $user = new Users();
+        $matieres = [];
 
         // Création de l'objet formulaire
-        $form = $this->createForm(IntervenantAjouterFormType::class, $user);
+        $form = $this->createForm(IntervenantAjouterFormType::class, null);
 
         // Récupération des données du formulaire
         $form->handleRequest($request);
-
+ 
+        
         // Vérification de l'envoi et le données du formulaire
         if($form->isSubmitted() && $form->isValid())
         {
             // Ecriture dans la base de données
+            $matieres = $form->get('idmatiere')->getData();
+            $user->setNom($form->get('nom')->getData());
+            $user->setPrenom($form->get('prenom')->getData());
+            $user->setEmail($form->get('email')->getData());
+            $user->setPassword($form->get('password')->getData());
             $this->getDoctrine()->getManager()->persist($user);
             $user->setRole('Intervenant');
             $this->getDoctrine()->getManager()->flush();
@@ -108,6 +117,15 @@ class ProfesseurController extends AbstractController
 
             $this->getDoctrine()->getManager()->persist($intervenant);
             $this->getDoctrine()->getManager()->flush();
+
+            foreach($matieres as $matiere){
+                $matiereWithInter = new InterWithMatiere(); 
+                $matiereWithInter->setIdmat($matiere);
+                $matiereWithInter->setIdinter($this->getDoctrine()->getRepository(Intervenants::class)->findOneBy(['IdUsers' => $this->getDoctrine()->getRepository(Users::class)->findOneBy(['email' => $user->getEmail()])]));
+                $this->getDoctrine()->getManager()->persist($matiereWithInter);
+                $this->getDoctrine()->getManager()->flush();
+            }
+
             return $this->redirect('/intervenants');
         }
         return $this->render('professeur/addProfesseur.html.twig', [
