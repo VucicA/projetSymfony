@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\Calendar;
 use App\Entity\Matieres;
 use App\Entity\Intervenants;
+use App\Entity\Users;
 use App\Form\CalendarType;
 use App\Repository\CalendarRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +27,11 @@ class PlanningController extends AbstractController
     {
         if($session->get('role') == 'Intervenant')
         {
-            $event = $calendarRepository->findOneBy(['role', 'Intervenant']); 
+            $idIntervenant = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['id' => $session->get('id')]);
+
+            $events = $calendarRepository->findBy(['IdInter' => $idIntervenant->getId()]);
+            $rdvs = [];
+            foreach($events as $event){
             if($event->getFerie()){
                 $rdvs[] = [
                     'id' => $event->getId(),
@@ -60,6 +65,7 @@ class PlanningController extends AbstractController
 
                     ];
                 }
+            }
         }
         else
         {

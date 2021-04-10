@@ -7,6 +7,7 @@ use App\Entity\Intervenants;
 use App\Entity\Disponnibilites;
 use App\Form\DispoType;
 use App\Repository\DisponnibilitesRepository;
+use App\Entity\Users;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class DispoController extends AbstractController
 {
+    
    /**
      * @Route("/dispo", name="disponnibilite", methods={"GET"})
      */
@@ -25,19 +27,25 @@ class DispoController extends AbstractController
     {
         if($session->get('role') == 'Intervenant')
         {
-            $event = $dispoRepository->findOneBy(['role', 'Intervenant']); 
-            $dispo = [
-                'id' => $event->getId(),
-                'start' => $event->getStart()->format('Y-m-d H:i:s'),
-                'end' => $event->getEnd()->format('Y-m-d H:i:s'),
-                'title' => 'Indispo',
-                'description' => $event->getDescription(),
-                'backgroundColor' => 'black',
-                'borderColor' => 'black',
-                'textColor' =>'white',
-                'allDay' => $event->getAllDay(),
-                'idinter' => $event->getIdinter()->getId(),
-            ];
+            $idIntervenant = $this->getDoctrine()->getRepository(Users::class)->findOneBy(['id' => $session->get('id')]);
+
+            
+            $events = $dispoRepository->findBy(['idinter' => $idIntervenant->getId()]);
+            $dispos = [];
+            foreach($events as $event){
+                $dispo[] = [
+                    'id' => $event->getId(),
+                    'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                    'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                    'title' => 'Indispo',
+                    'description' => $event->getDescription(),
+                    'backgroundColor' => 'black',
+                    'borderColor' => 'black',
+                    'textColor' =>'white',
+                    'allDay' => $event->getAllDay(),
+                    'idinter' => $event->getIdinter()->getId(),
+                ];
+            }
         }
         else
         {
@@ -58,9 +66,9 @@ class DispoController extends AbstractController
 
                     ];   
             }
+            
         }
 
-        
         $data = json_encode($dispos);
         return $this->render('dispo/index.html.twig', compact('data'));
     }

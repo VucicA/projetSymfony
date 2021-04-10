@@ -42,7 +42,7 @@
                                     <a class="nav-link" href="/intervenants">Professeur</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/module">Module</a>
+                                    <a class="nav-link" href="/matieres">Module</a>
                                 </li>
                                 {#
                                 <li class="nav-item">
@@ -52,7 +52,10 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="/dispo">Etudiant</a>
                                 </li>
-                                {% elseif role == 'Intervenant' %}
+                            {% elseif role == 'Intervenant' %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/planning">Emploi du temps</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/dispo">Disponibilité</a>
                                 </li>

@@ -35,9 +35,7 @@ class LoginController extends AbstractController
 
             if($form->get('password')->getData() == $userValidity->getPassword())
             {
-                $session = new Session();
-                $session->invalidate(1);
-                $session->start();
+                $session = $this->get('session');
 
                 $session->set('id', $userValidity->getId());
                 $session->set('role', $userValidity->getRole());               
@@ -60,7 +58,8 @@ class LoginController extends AbstractController
     public function logout()
     {
         $session = $this->get('session');
-        $session->invalidate(1);
+        $session->remove('id');
+        $session->remove('role');
         //throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
         return $this->redirect('/');
     }
