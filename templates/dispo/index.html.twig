@@ -13,9 +13,11 @@
     </style>
 {% endblock %}
 {% block body %}
-    <a type="button" class="btn btn-dark" href="{{ path('disponnibilite_list')}}">Liste des Disponnibilités</a>
+    {% set role = app.session.get('role') %}
+    {% if role == 'Intervenant' %}
+    <a type="button" class="btn btn-dark" href="{{ path('disponnibilite_list')}}">Liste des Disponibilités</a>
     <div id="calendrier">
-
+    {% endif %}
 
     </div>
 
