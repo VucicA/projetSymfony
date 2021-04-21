@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Calendar{% endblock %}
+{% block title %}Nouvelle intervention{% endblock %}
 
 {% block body %}
-    <h1>Create new Calendar</h1>
+    <h1>Nouvelle intervention</h1>
 
     {{ include('planning/_form.html.twig') }}
 
-    <a href="{{ path('planning') }}">back to list</a>
+    <a href="{{ path('planning_list') }}">back to list</a>
 {% endblock %}
